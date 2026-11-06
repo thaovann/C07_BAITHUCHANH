@@ -1,13 +1,49 @@
+# Thu vien cho bo bai thuc hanh C07
+# Python 3.10.11
+#
+#     pip install -r requirements.txt
+#
+# Xem README.md de biet chi tiet: nhom nao danh cho bai nao, cach cai rieng
+# tung nhom, va cac luu y ve torch / protobuf / statsmodels.
+#
+# LUU Y: file nay chi dung ky tu ASCII. pip phien ban 24.x tro ve truoc giai
+# ma requirements.txt bang bang ma he thong (tren Windows tieng Viet la
+# cp1252), nen ky tu co dau hoac ke khung se gay UnicodeDecodeError.
+
+
+# --- Nhom 1: hoc may co dien -------------------------------------------------
+# Du cho toan bo 15 bai moi (KNN, Naive Bayes, SVM, phat hien bat thuong,
+# Voting & Stacking) o ca ba CV. Khong can GPU.
 numpy==1.26.4
 pandas==1.5.1
 scikit-learn==1.2.0
 matplotlib==3.8.2
 seaborn==0.13.1
 jupyterlab==4.1.5
+
+# --- Nhom 2: gradient boosting -----------------------------------------------
+# CV4.1 B3, B4, B6, B8, B10
 xgboost==2.0.3
+
+# --- Nhom 3: hoc sau (TensorFlow / Keras) ------------------------------------
+# CV4.1 B5-B10 | CV4.2 B6-B9 | CV4.4 B3-B4
+tensorflow==2.11.0
+
+# --- Nhom 4: mo hinh ngon ngu (SecBERT / TinyBERT) ---------------------------
+# CV4.1 B11-B12 | CV4.2 B10 | CV4.4 B5
+# Dong torch duoi day cai ban CPU tu PyPI. Muon ban CUDA:
+#   pip install torch==2.6.0 --index-url https://download.pytorch.org/whl/cu124
 torch==2.6.0
 transformers==5.5.3
 datasets==4.8.4
+
+# --- Nhom 5: giai thich mo hinh (XAI) ----------------------------------------
+# CV4.2 B11
 shap==0.48.0
 lime==0.2.0.1
+
+# --- Nhom 6: thong ke --------------------------------------------------------
+# CV4.2 B4 (variance_inflation_factor)
+# Dung >= vi goi nay chua duoc cai tren may da chay toan bo notebook, nen day
+# la muc toi thieu khuyen nghi chu khong phai phien ban da xac minh.
 statsmodels>=0.14
