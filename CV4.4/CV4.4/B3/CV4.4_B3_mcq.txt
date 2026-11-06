@@ -1,0 +1,131 @@
+====================================================================
+TRẮC NGHIỆM – CV4.4 BÀI 3
+Xây dựng mô hình LSTM phát hiện tấn công trong hệ thống ICS
+====================================================================
+Mỗi câu có 4 lựa chọn (A, B, C, D). Chỉ có 1 đáp án đúng.
+Đáp án đúng được đánh dấu bằng [*].
+====================================================================
+
+Câu 1: LSTM là viết tắt của:
+A. Linear Sequential Temporal Model
+[*] B. Long Short-Term Memory
+C. Large Scale Training Method
+D. Layered Sequence Time Model
+
+Câu 2: Trong LSTM, vấn đề "vanishing gradient" của RNN thông thường được giải quyết bằng:
+A. Tăng learning rate
+[*] B. Cơ chế cổng (gates): forget gate, input gate, output gate
+C. Dùng hàm kích hoạt ReLU thay vì sigmoid
+D. Batch normalization
+
+Câu 3: Tham số return_sequences=True trong lớp LSTM đầu tiên có nghĩa là:
+A. Lớp LSTM sẽ lặp lại đầu vào nhiều lần
+[*] B. Lớp LSTM trả về toàn bộ chuỗi đầu ra (output tại mỗi timestep), không chỉ timestep cuối
+C. Các sequence sẽ được xử lý ngược chiều
+D. Giữ lại hidden state giữa các batch
+
+Câu 4: Trong hàm create_sequences, nhãn của một chuỗi được xác định là:
+A. Nhãn của timestep đầu tiên trong chuỗi
+B. Nhãn của timestep cuối cùng trong chuỗi
+[*] C. 1 nếu có ít nhất 1 timestep tấn công trong chuỗi, 0 nếu không
+D. Trung bình của tất cả nhãn trong chuỗi
+
+Câu 5: Với WINDOW_SIZE=30 và STEP=5, sliding window di chuyển bao nhiêu bước mỗi lần?
+A. 30 bước
+B. 1 bước
+[*] C. 5 bước
+D. 150 bước (30×5)
+
+Câu 6: Class weight {0: 1.0, 1: 7.47} có tác dụng gì trong quá trình huấn luyện?
+A. Giảm số lượng mẫu bình thường xuống còn 1/7.47
+[*] B. Tăng trọng số của lỗi trên mẫu tấn công lên 7.47 lần so với lỗi trên mẫu bình thường
+C. Lấy mẫu lại dữ liệu để cân bằng hai lớp
+D. Thay đổi ngưỡng phân loại từ 0.5 sang 1/7.47
+
+Câu 7: Callback EarlyStopping với patience=10 dừng huấn luyện khi:
+A. Val loss tăng liên tục 10 epoch đầu tiên
+[*] B. Val loss không cải thiện trong 10 epoch liên tiếp
+C. Train loss giảm xuống dưới 0.10
+D. Số epoch vượt quá 10% của tổng số epoch
+
+Câu 8: Callback ReduceLROnPlateau với factor=0.5 làm gì khi val_loss không cải thiện?
+[*] A. Giảm learning rate xuống còn 50% giá trị hiện tại
+B. Tăng batch size lên gấp đôi
+C. Dừng huấn luyện ngay lập tức
+D. Khởi tạo lại trọng số ngẫu nhiên
+
+Câu 9: Tại sao ngưỡng phân loại tối ưu thường ≠ 0.5 trong bài phát hiện tấn công?
+A. Sigmoid không cho ra đúng xác suất
+[*] B. Do mất cân bằng lớp, ngưỡng 0.5 thường ưu tiên lớp đa số; ngưỡng thấp hơn tăng recall tấn công
+C. LSTM không thể xuất xác suất trong [0, 1]
+D. Ngưỡng 0.5 chỉ phù hợp với phân loại đa lớp
+
+Câu 10: Lớp Dropout(0.3) trong mô hình LSTM hoạt động như thế nào trong quá trình huấn luyện?
+A. Xóa ngẫu nhiên 30% dữ liệu đầu vào
+[*] B. Tắt ngẫu nhiên 30% nơ-ron trong mỗi batch huấn luyện
+C. Giảm learning rate 30% sau mỗi epoch
+D. Thay thế 30% giá trị âm bằng 0
+
+Câu 11: Hàm kích hoạt sigmoid trong lớp Dense cuối cùng phù hợp vì:
+A. Cho ra giá trị từ -1 đến 1
+[*] B. Cho ra xác suất trong [0, 1], phù hợp với phân loại nhị phân
+C. Không có điểm bão hòa (saturation)
+D. Đạo hàm dễ tính hơn các hàm khác
+
+Câu 12: Binary crossentropy loss được dùng vì bài toán là:
+A. Hồi quy (regression)
+[*] B. Phân loại nhị phân (binary classification: normal vs attack)
+C. Phân loại đa lớp (multi-class)
+D. Phân cụm không có giám sát
+
+Câu 13: Sau khi huấn luyện LSTM, nếu val_loss tăng nhưng train_loss vẫn giảm, đây là dấu hiệu của:
+[*] A. Overfitting (mô hình học quá khớp trên train, kém tổng quát)
+B. Underfitting
+C. Learning rate quá thấp
+D. Batch size quá lớn
+
+Câu 14: Lý do chọn WINDOW_SIZE=30 (thay vì 1 timestep duy nhất) là:
+A. LSTM yêu cầu đầu vào phải có ít nhất 30 bước
+[*] B. Tấn công ICS có mẫu thời gian kéo dài, cần nhiều timestep để phát hiện
+C. 30 là giá trị mặc định của TensorFlow/Keras
+D. Giảm số lượng tham số của mô hình
+
+Câu 15: Hàm roc_auc_score yêu cầu tham số thứ hai là:
+A. Nhãn dự đoán (0 hoặc 1)
+[*] B. Xác suất liên tục (predict_proba hoặc model.predict)
+C. F1-score của từng lớp
+D. Ngưỡng phân loại
+
+Câu 16: Trong kiến trúc LSTM 2 lớp, lớp LSTM thứ nhất cần return_sequences=True để:
+A. Xuất kết quả dự đoán cuối cùng
+B. Lưu lại hidden state cho batch tiếp theo
+[*] C. Trả về chuỗi output đầy đủ làm đầu vào cho lớp LSTM thứ hai
+D. Tăng số lượng tham số của mô hình
+
+Câu 17: Optimizer Adam được chọn vì ưu điểm nào?
+A. Đơn giản, chỉ cần 1 hyperparameter
+[*] B. Kết hợp momentum và adaptive learning rate, thường hội tụ nhanh với ít điều chỉnh
+C. Đảm bảo tìm được global minimum
+D. Không cần gradient tính toán
+
+Câu 18: Khi tạo chuỗi cho Test 2 với step=1 (thay vì step=5 cho train), mục đích là:
+A. Tăng số lượng dữ liệu huấn luyện
+[*] B. Đảm bảo phủ toàn bộ các timestep trong test, không bỏ sót điểm nào khi đánh giá
+C. Làm cho test nhanh hơn
+D. Tránh tạo các chuỗi chồng lấp
+
+Câu 19: Tại sao không nên fit StandardScaler trên cả train lẫn test trong bài LSTM này?
+A. Vì StandardScaler không tương thích với dữ liệu chuỗi thời gian
+[*] B. Vì thống kê của test (mean/std) sẽ rò rỉ vào train, làm kết quả đánh giá không thực tế
+C. Vì LSTM tự động chuẩn hóa đầu vào
+D. Vì test có phân phối khác biệt hoàn toàn
+
+Câu 20: Kết quả AUC-ROC ≥ 0.99 trên validation cho mô hình LSTM trong bài này có nghĩa là:
+[*] A. Mô hình phân biệt rất tốt tấn công và bình thường; với bất kỳ ngưỡng nào, diện tích dưới đường ROC đạt ≥ 0.99
+B. Mô hình dự đoán đúng 99% mẫu
+C. Precision và Recall đều ≥ 99%
+D. Mô hình phát hiện 99% cuộc tấn công
+
+====================================================================
+KẾT THÚC TRẮC NGHIỆM BÀI 3 – CV4.4
+====================================================================

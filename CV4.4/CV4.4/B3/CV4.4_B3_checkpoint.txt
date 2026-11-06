@@ -1,0 +1,129 @@
+====================================================================
+CHECKPOINT – CV4.4 BÀI 3
+Xây dựng mô hình LSTM phát hiện tấn công ICS
+====================================================================
+
+CHECKPOINT 1 – Kích thước dữ liệu và số đặc trưng
+---------------------------------------------------
+Code:
+    print(X_test1_sc.shape, X_test2_sc.shape)
+    print(X_test1_sc.shape[1])
+
+Kết quả đúng:
+    (18433, 43) (10081, 43)
+    43
+
+--------------------------------------------------------------------
+
+CHECKPOINT 2 – Số chuỗi sau sliding window (WINDOW=30, STEP=5) trên Test 1
+---------------------------------------------------------------------------
+Code:
+    WINDOW_SIZE = 30; STEP = 5
+    X_sup, y_sup = create_sequences(X_test1_sc, y_test1, WINDOW_SIZE, STEP)
+    print(X_sup.shape)
+    print(y_sup.sum(), len(y_sup))
+
+Kết quả đúng:
+    (3681, 30, 43)
+    434 3681
+
+--------------------------------------------------------------------
+
+CHECKPOINT 3 – Kích thước và số tấn công sau split 70/30
+---------------------------------------------------------
+Code:
+    X_tr, X_val, y_tr, y_val = train_test_split(
+        X_sup, y_sup, test_size=0.3, random_state=42, stratify=y_sup)
+    print(X_tr.shape, X_val.shape)
+    print(y_tr.sum(), y_val.sum())
+
+Kết quả đúng:
+    (2576, 30, 43) (1105, 30, 43)
+    304 130
+
+--------------------------------------------------------------------
+
+CHECKPOINT 4 – Số mẫu bình thường và tấn công trong tập train
+--------------------------------------------------------------
+Code:
+    print((y_tr == 0).sum(), (y_tr == 1).sum())
+
+Kết quả đúng:
+    2272 304
+
+--------------------------------------------------------------------
+
+CHECKPOINT 5 – Class weight (pos_weight)
+-----------------------------------------
+Code:
+    pos_weight = (y_tr == 0).sum() / (y_tr == 1).sum()
+    print(round(pos_weight, 4))
+    print({0: 1.0, 1: round(float(pos_weight), 4)})
+
+Kết quả đúng:
+    7.4737
+    {0: 1.0, 1: 7.4737}
+
+--------------------------------------------------------------------
+
+CHECKPOINT 6 – Tổng số tham số mô hình LSTM
+--------------------------------------------
+Code:
+    model = build_lstm_model(WINDOW_SIZE, n_features=43)
+    print(model.count_params())
+
+Kết quả đúng:
+    40609
+
+--------------------------------------------------------------------
+
+CHECKPOINT 7 – Kích thước chuỗi Test 2 (STEP=1)
+-------------------------------------------------
+Code:
+    X_test2_seq, y_test2_seq = create_sequences(X_test2_sc, y_test2, WINDOW_SIZE, 1)
+    print(X_test2_seq.shape)
+    print(y_test2_seq.sum())
+
+Kết quả đúng:
+    (10052, 30, 43)
+    1831
+
+--------------------------------------------------------------------
+
+CHECKPOINT 8 – Phân phối nhãn Test 2
+--------------------------------------
+Code:
+    y_test2 = (test2_df['ATT_FLAG'] != 0).astype(int).values
+    print((y_test2 == 0).sum(), (y_test2 == 1).sum())
+
+Kết quả đúng:
+    8453 1628
+
+--------------------------------------------------------------------
+
+CHECKPOINT 9 – Kích thước input/output của LSTM model
+------------------------------------------------------
+Code:
+    model = build_lstm_model(WINDOW_SIZE, n_features=43)
+    print(model.input_shape)
+    print(model.output_shape)
+
+Kết quả đúng:
+    (None, 30, 43)
+    (None, 1)
+
+--------------------------------------------------------------------
+
+CHECKPOINT 10 – Tổng số mẫu train + val sau sliding window
+-----------------------------------------------------------
+Code:
+    print(len(X_tr) + len(X_val))
+    print(len(X_tr) + len(X_val) == len(X_sup))
+
+Kết quả đúng:
+    3681
+    True
+
+====================================================================
+KẾT THÚC CHECKPOINT BÀI 3 – CV4.4
+====================================================================

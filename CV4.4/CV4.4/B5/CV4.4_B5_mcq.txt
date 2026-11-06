@@ -1,0 +1,131 @@
+====================================================================
+TRẮC NGHIỆM – CV4.4 BÀI 5
+Xây dựng mô hình LLM (SecBERT) phát hiện tấn công trong hệ thống ICS
+====================================================================
+Mỗi câu có 4 lựa chọn (A, B, C, D). Chỉ có 1 đáp án đúng.
+Đáp án đúng được đánh dấu bằng [*].
+====================================================================
+
+Câu 1: SecBERT là mô hình được pre-train cho lĩnh vực nào?
+A. Nhận dạng giọng nói bảo mật
+[*] B. Xử lý văn bản an ninh mạng (cybersecurity text)
+C. Tạo mã độc (malware generation)
+D. Phân tích hình ảnh camera an ninh
+
+Câu 2: Trong bài 5, BERT được sử dụng để xử lý dữ liệu cảm biến ICS bằng cách nào?
+A. Mã hóa tên cột thành token BERT
+[*] B. Chiếu chuỗi số liệu cảm biến vào không gian hidden_size=768 để dùng attention mechanism của BERT
+C. Dùng BERT để đọc file CSV chứa dữ liệu
+D. Fine-tune BERT trực tiếp trên văn bản mô tả tấn công
+
+Câu 3: Token CLS trong kiến trúc BERT có vai trò gì trong bài 5?
+A. Mã hóa ngày giờ của dữ liệu
+[*] B. Tổng hợp thông tin toàn bộ chuỗi; đầu ra CLS được dùng để dự đoán timestep tiếp theo
+C. Đánh dấu điểm bắt đầu của chuỗi tấn công
+D. Lưu trữ hidden state của timestep cuối cùng
+
+Câu 4: Positional Encoding hình sin (Sinusoidal PE) được dùng thay vì học được (learned PE) vì:
+A. Learned PE tốn nhiều bộ nhớ hơn
+[*] B. Sinusoidal PE không cần học, cố định và tổng quát tốt sang độ dài chuỗi chưa thấy
+C. BERT gốc không dùng positional encoding
+D. Sinusoidal PE cho AUC cao hơn trong thực nghiệm ICS
+
+Câu 5: Trong TimeSeriesBERTFineTune, 10 lớp encoder đầu bị đóng băng (frozen) và 2 lớp cuối được fine-tune vì:
+A. 10 lớp đầu không có thông tin hữu ích
+[*] B. Đóng băng bảo tồn đặc trưng chung đã học từ pre-training; fine-tune 2 lớp cuối để thích nghi với domain ICS
+C. BERT chỉ có 2 lớp cuối có thể học
+D. Fine-tune toàn bộ sẽ gây lỗi out-of-memory
+
+Câu 6: Bài toán reconstruction trong bài 5 có nghĩa là:
+A. Tái tạo lại đầu vào ban đầu từ biểu diễn nén
+[*] B. Dự đoán timestep tiếp theo (X[i+1]) từ chuỗi lịch sử 50 timestep trước (X[i-50:i])
+C. Phân loại trực tiếp là tấn công hay bình thường
+D. Sinh ra dữ liệu tổng hợp để augment tập train
+
+Câu 7: Smoothness loss trong hàm compute_loss có công thức: mean((pred[:,1:] - pred[:,:-1])^2). Tác dụng là:
+A. Tăng tốc huấn luyện
+[*] B. Khuyến khích dự đoán liên tục theo thời gian, tránh thay đổi đột ngột không thực tế
+C. Chuẩn hóa đầu ra về [0, 1]
+D. Giảm thiểu lỗi tuyệt đối thay vì bình phương
+
+Câu 8: Optimizer AdamW khác với Adam ở điểm gì?
+A. AdamW có learning rate cao hơn mặc định
+[*] B. AdamW tách weight decay ra khỏi gradient update (decoupled weight decay), tránh tương tác với adaptive LR
+C. AdamW chỉ dùng được với BERT
+D. AdamW không có momentum
+
+Câu 9: Gradient clipping (max_norm=1.0) trong bài 5 được dùng để:
+A. Tăng tốc độ học
+[*] B. Ngăn gradient exploding khi fine-tune mô hình lớn (83M params)
+C. Giảm memory footprint
+D. Chuẩn hóa trọng số của mô hình
+
+Câu 10: Tỷ lệ trainable params ~17% (thay vì 100%) của SecBERT model trong bài 5 có ý nghĩa gì?
+A. Mô hình bị hỏng, chỉ còn 17% hoạt động
+[*] B. Chiến lược fine-tune hiệu quả: chỉ update 2 lớp cuối và output layer, giữ nguyên phần lớn pre-trained weights
+C. Phần còn lại 83% bị xóa để giảm bộ nhớ
+D. Phải luôn giữ tỷ lệ này để đảm bảo ổn định
+
+Câu 11: Reconstruction error được tính bằng (pred - gt)^2 tại mỗi điểm. Sự khác biệt giữa điểm bình thường và tấn công là:
+A. Điểm bình thường luôn có lỗi = 0
+[*] B. Điểm tấn công có hành vi bất thường mà mô hình (chỉ train trên dữ liệu bình thường) không dự đoán được, dẫn đến lỗi cao hơn
+C. Điểm tấn công có lỗi thấp hơn do giá trị cảm biến nhỏ hơn
+D. Không có sự khác biệt hệ thống, cần ngưỡng để phân loại
+
+Câu 12: Grid search trên percentile và window size trong bài 5 nhằm mục đích:
+A. Tối ưu hóa kiến trúc mô hình
+[*] B. Tìm ngưỡng theta và kích thước window làm mượt tốt nhất để tối đa hóa F1 trên test1
+C. Chọn số epoch huấn luyện tối ưu
+D. Tìm learning rate tốt nhất
+
+Câu 13: Convolution trong bước smoothing (np.convolve) với window=5 có tác dụng gì?
+[*] A. Làm mượt tín hiệu lỗi theo thời gian, giảm false positives do nhiễu tức thời
+B. Tăng độ nhạy phát hiện các spike ngắn
+C. Giảm thời gian tính toán 5 lần
+D. Chuẩn hóa lỗi về [0, 1]
+
+Câu 14: Tại sao cần cắt bỏ HISTORY+1 = 51 điểm đầu khi đánh giá trên test1/test2?
+A. Vì 51 điểm đầu là nhiễu
+[*] B. Vì với HISTORY=50, điểm đầu tiên có thể dự đoán là điểm thứ 51; các điểm trước đó không có chuỗi lịch sử đủ dài
+C. Vì 51 điểm đầu luôn là bình thường
+D. Để cân bằng số điểm trong test1 và test2
+
+Câu 15: BERT sử dụng self-attention mechanism. Lợi thế chính của self-attention so với LSTM trong bài ICS là:
+A. Self-attention nhanh hơn LSTM trên CPU
+[*] B. Self-attention có thể học phụ thuộc dài hạn trực tiếp giữa bất kỳ hai timestep nào, không bị giới hạn bởi chuỗi
+C. Self-attention không cần positional encoding
+D. Self-attention ít tham số hơn LSTM
+
+Câu 16: Trong bài 5, mô hình được huấn luyện chỉ trên dữ liệu bình thường (48106 mẫu train). Đây là phương pháp:
+A. Supervised learning (học có giám sát)
+[*] B. Semi-supervised / unsupervised anomaly detection: học phân phối bình thường, tấn công = lỗi tái tạo cao
+C. Reinforcement learning
+D. Few-shot learning
+
+Câu 17: Nếu mô hình SecBERT bị overfit trên tập bình thường, điều gì xảy ra với reconstruction error trên dữ liệu tấn công?
+A. Lỗi trên tấn công tăng cao, dễ phát hiện
+[*] B. Lỗi trên tấn công có thể giảm xuống (mô hình học quá tốt và "tái tạo" được cả tấn công), làm giảm khả năng phát hiện
+C. Lỗi trên bình thường tăng cao
+D. Không có thay đổi
+
+Câu 18: Số lượng chuỗi train_seq = 6000 được chọn từ tổng ~48055 mẫu khả dụng. Phần còn lại dùng làm gì?
+A. Bỏ đi, không sử dụng
+[*] B. Dùng làm tập validation để theo dõi val_loss trong quá trình huấn luyện
+C. Dùng để test nội bộ
+D. Dùng để huấn luyện epoch tiếp theo
+
+Câu 19: Mô hình SecBERT trong bài 5 có ~83.5 triệu tham số. So với CNN (~63K) và LSTM (~65K) ở bài trước, ưu điểm chính là:
+A. Nhanh hơn trong inference
+[*] B. Đã học được biểu diễn ngữ nghĩa phong phú từ pre-training, có thể transfer sang domain mới với ít dữ liệu hơn
+C. Ít overfitting hơn
+D. Phù hợp với thiết bị nhúng ICS có bộ nhớ hạn chế
+
+Câu 20: Kết quả F1 của SecBERT trên Test 2 (~0.75-0.95) so với GBC bài 1 (~0.97) cho thấy điều gì?
+A. BERT luôn tốt hơn ML truyền thống trong mọi bài toán
+B. GBC tốt hơn nên không nên dùng BERT cho ICS
+[*] C. Với bài toán này, GBC (supervised) có thể vượt trội; BERT có ưu thế khi thiếu nhãn hoặc cần phát hiện tấn công chưa biết trước
+D. F1 của SecBERT sẽ tiếp tục tăng nếu train thêm epoch
+
+====================================================================
+KẾT THÚC TRẮC NGHIỆM BÀI 5 – CV4.4
+====================================================================

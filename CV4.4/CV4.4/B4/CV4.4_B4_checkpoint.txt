@@ -1,0 +1,140 @@
+====================================================================
+CHECKPOINT – CV4.4 BÀI 4
+Xây dựng mô hình CNN phát hiện tấn công ICS
+====================================================================
+
+CHECKPOINT 1 – Kích thước dữ liệu sau chuẩn hóa
+-------------------------------------------------
+Code:
+    print(X_train_sc.shape, X_test1_sc.shape, X_test2_sc.shape)
+
+Kết quả đúng:
+    (48106, 43) (18433, 43) (10081, 43)
+
+--------------------------------------------------------------------
+
+CHECKPOINT 2 – Chỉ số chia temporal split (70%)
+-------------------------------------------------
+Code:
+    split_idx = int(len(X_test1_sc) * 0.7)
+    print(split_idx)
+
+Kết quả đúng:
+    12903
+
+--------------------------------------------------------------------
+
+CHECKPOINT 3 – Chuỗi bình thường từ train_df (STEP=8)
+------------------------------------------------------
+Code:
+    WINDOW_SIZE = 30; STEP_NORM = 8
+    y_zeros = np.zeros(len(X_train_sc), dtype=np.int32)
+    X_norm_seq, y_norm_seq = create_sequences(X_train_sc, y_zeros, WINDOW_SIZE, STEP_NORM)
+    print(X_norm_seq.shape)
+    print(y_norm_seq.sum())
+
+Kết quả đúng:
+    (6010, 30, 43)
+    0
+
+--------------------------------------------------------------------
+
+CHECKPOINT 4 – Chuỗi từ phần đầu Test 1 (STEP=5)
+--------------------------------------------------
+Code:
+    STEP_TRAIN = 5
+    X_t1_train, y_t1_train = create_sequences(
+        X_test1_sc[:split_idx], y_test1[:split_idx], WINDOW_SIZE, STEP_TRAIN)
+    print(X_t1_train.shape)
+    print(y_t1_train.sum())
+
+Kết quả đúng:
+    (2575, 30, 43)
+    205
+
+--------------------------------------------------------------------
+
+CHECKPOINT 5 – Tập train kết hợp
+----------------------------------
+Code:
+    X_tr = np.concatenate([X_norm_seq, X_t1_train], axis=0)
+    y_tr = np.concatenate([y_norm_seq, y_t1_train], axis=0)
+    print(X_tr.shape)
+    print((y_tr == 0).sum(), (y_tr == 1).sum())
+
+Kết quả đúng:
+    (8585, 30, 43)
+    8380 205
+
+--------------------------------------------------------------------
+
+CHECKPOINT 6 – Class weight (pos_weight)
+-----------------------------------------
+Code:
+    pos_weight = (y_tr == 0).sum() / (y_tr == 1).sum()
+    print(round(pos_weight, 4))
+
+Kết quả đúng:
+    40.878
+
+--------------------------------------------------------------------
+
+CHECKPOINT 7 – Tổng số tham số CNN
+------------------------------------
+Code:
+    model = build_cnn_model(WINDOW_SIZE, n_features=43)
+    print(model.count_params())
+    trainable = sum(v.numpy().size for v in model.trainable_variables)
+    non_trainable = model.count_params() - trainable
+    print(trainable, non_trainable)
+
+Kết quả đúng:
+    62913
+    62401 512
+
+--------------------------------------------------------------------
+
+CHECKPOINT 8 – Chuỗi Val từ phần sau Test 1 (STEP=1)
+-----------------------------------------------------
+Code:
+    STEP_EVAL = 1
+    X_val_seq, y_val_seq = create_sequences(
+        X_test1_sc[split_idx:], y_test1[split_idx:], WINDOW_SIZE, STEP_EVAL)
+    print(X_val_seq.shape)
+    print(y_val_seq.sum())
+
+Kết quả đúng:
+    (5501, 30, 43)
+    1143
+
+--------------------------------------------------------------------
+
+CHECKPOINT 9 – Chuỗi Test 2 (STEP=1)
+--------------------------------------
+Code:
+    y_test2 = (test2_df['ATT_FLAG'] != 0).astype(int).values
+    X_test2_seq, y_test2_seq = create_sequences(X_test2_sc, y_test2, WINDOW_SIZE, STEP_EVAL)
+    print(X_test2_seq.shape)
+    print(y_test2_seq.sum())
+
+Kết quả đúng:
+    (10052, 30, 43)
+    1831
+
+--------------------------------------------------------------------
+
+CHECKPOINT 10 – Tổng số tham số CNN so sánh với LSTM bài 3
+------------------------------------------------------------
+Code:
+    cnn_params  = build_cnn_model(WINDOW_SIZE, n_features=43).count_params()
+    lstm_params = build_lstm_model(WINDOW_SIZE, n_features=43).count_params()
+    print('CNN params:', cnn_params)
+    print('LSTM params:', lstm_params)
+
+Kết quả đúng:
+    CNN params: 62913
+    LSTM params: 40609
+
+====================================================================
+KẾT THÚC CHECKPOINT BÀI 4 – CV4.4
+====================================================================

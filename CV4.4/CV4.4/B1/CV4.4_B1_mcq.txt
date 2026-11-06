@@ -1,0 +1,131 @@
+====================================================================
+TRẮC NGHIỆM – CV4.4 BÀI 1
+Xây dựng mô hình học máy phát hiện tấn công ICS (BATADAL - Sensor Data)
+====================================================================
+Mỗi câu có 4 lựa chọn (A, B, C, D). Chỉ có 1 đáp án đúng.
+Đáp án đúng được đánh dấu bằng [*].
+====================================================================
+
+Câu 1: Bộ dữ liệu BATADAL dùng trong bài 1 gồm bao nhiêu đặc trưng (feature) sau khi loại bỏ cột DATETIME và ATT_FLAG?
+A. 41
+B. 42
+[*] C. 43
+D. 45
+
+Câu 2: Trong tập train_dataset.csv của BATADAL, dữ liệu nhãn là gì?
+A. Chứa cả mẫu bình thường và tấn công
+[*] B. Chỉ chứa mẫu bình thường (normal only)
+C. Chỉ chứa mẫu tấn công
+D. Không có nhãn
+
+Câu 3: Tỷ lệ tấn công (attack rate) trong test_dataset_1.csv là bao nhiêu?
+[*] A. 10.7%
+B. 16.1%
+C. 5.3%
+D. 20.0%
+
+Câu 4: Khi sử dụng StandardScaler, thao tác fit được thực hiện trên tập dữ liệu nào?
+A. Tập train_dataset (train_df)
+[*] B. Tập test_dataset_1 (test1) – dùng làm tập supervised
+C. Cả 3 tập: train, test1, test2 cùng lúc
+D. Tập test_dataset_2 (test2)
+
+Câu 5: Hàm train_test_split được gọi với tham số stratify=y_sup để làm gì?
+A. Giảm thời gian huấn luyện
+[*] B. Đảm bảo tỷ lệ nhãn trong train và val giống với tập gốc
+C. Sắp xếp dữ liệu theo thứ tự thời gian
+D. Loại bỏ các mẫu ngoại lai (outliers)
+
+Câu 6: Tham số class_weight='balanced' trong LogisticRegression có tác dụng gì?
+A. Làm cho tất cả trọng số bằng nhau
+[*] B. Tự động điều chỉnh trọng số của từng lớp tỉ lệ nghịch với tần suất xuất hiện trong dữ liệu
+C. Tăng learning rate cho lớp thiểu số
+D. Loại bỏ các mẫu bình thường để cân bằng lớp
+
+Câu 7: Trong bài 1, loại cảm biến nào chiếm nhiều nhất trong 43 đặc trưng?
+[*] A. PRESSURE (19 cột)
+B. FLOW (19 cột)
+C. STATUS (19 cột)
+D. TEMPERATURE (19 cột)
+
+Câu 8: Mô hình nào trong ba mô hình (LR, RF, GBC) cho F1-score cao nhất trên tập validation?
+A. Logistic Regression
+B. Random Forest và Logistic Regression bằng nhau
+[*] C. Gradient Boosting Classifier
+D. Logistic Regression cao hơn cả RF và GBC
+
+Câu 9: Tại sao phải đánh giá mô hình trên test_dataset_2 sau khi đã chọn mô hình dựa trên test_dataset_1?
+A. Vì test2 có nhiều mẫu hơn test1
+[*] B. Để kiểm tra khả năng tổng quát hóa của mô hình trên dữ liệu chưa từng thấy
+C. Vì test2 có tỷ lệ tấn công thấp hơn
+D. Vì test2 không có nhãn, cần dự đoán
+
+Câu 10: Trong GradientBoostingClassifier, tham số n_estimators=100 có nghĩa là gì?
+A. Số lần lặp tối đa để hội tụ
+B. Số lượng đặc trưng được chọn ngẫu nhiên
+[*] C. Số cây quyết định (weak learners) được xây dựng tuần tự
+D. Số tầng ẩn trong mạng nơ-ron
+
+Câu 11: Metric F1-score (macro) phù hợp hơn accuracy khi đánh giá bài toán phát hiện tấn công ICS vì:
+A. F1 chỉ quan tâm đến lớp tấn công (minority class)
+[*] B. F1 (macro) tính trung bình đều nhau cho cả hai lớp, không bị ảnh hưởng bởi mất cân bằng lớp
+C. Accuracy không thể tính được với dữ liệu ICS
+D. F1 luôn cho giá trị cao hơn accuracy
+
+Câu 12: Đường cong ROC (Receiver Operating Characteristic) biểu diễn mối quan hệ giữa:
+A. Precision và Recall
+[*] B. True Positive Rate (TPR) và False Positive Rate (FPR) ở các ngưỡng khác nhau
+C. F1-score và số lượng mẫu
+D. Loss và số epoch huấn luyện
+
+Câu 13: AUC-ROC = 0.99 cho mô hình Gradient Boosting có nghĩa là gì?
+[*] A. Mô hình có khả năng phân biệt tấn công và bình thường rất tốt với xác suất 99%
+B. Mô hình đạt accuracy 99% trên tập test
+C. Mô hình chỉ phát hiện được 99% các cuộc tấn công
+D. 99% các dự đoán của mô hình là đúng
+
+Câu 14: Khi Random Forest tính feature importance, giá trị này được tính dựa trên:
+A. Gradient của hàm mất mát theo từng đặc trưng
+[*] B. Mức độ giảm impurity (ví dụ: Gini) khi dùng đặc trưng đó để chia tách
+C. Hệ số tương quan Pearson giữa đặc trưng và nhãn
+D. Số lần đặc trưng xuất hiện trong các cây
+
+Câu 15: Trong kết quả confusion matrix với TN=4932, FP=8, FN=52, TP=538 (GBC - validation), Precision của lớp tấn công bằng:
+A. 0.9034
+[*] B. 0.9853 (= 538 / (538+8))
+C. 0.9119
+D. 0.9706
+
+Câu 16: Tham số max_depth=4 trong GradientBoostingClassifier kiểm soát điều gì?
+[*] A. Độ sâu tối đa của mỗi cây quyết định trong ensemble
+B. Số lượng đặc trưng tối đa được xem xét
+C. Số lần gradient descent tối đa
+D. Tỷ lệ dữ liệu được lấy mẫu mỗi lần
+
+Câu 17: Dữ liệu tập train_dataset.csv của BATADAL chỉ chứa dữ liệu bình thường. Điều này ảnh hưởng như thế nào đến chiến lược học máy?
+[*] A. Phải dùng test1 (có nhãn) để học có giám sát (supervised learning)
+B. Không thể dùng học có giám sát vì thiếu nhãn tấn công trong train
+C. Phải dùng học tăng cường (reinforcement learning)
+D. Không ảnh hưởng gì vì dữ liệu test vẫn có nhãn
+
+Câu 18: Hàm roc_auc_score yêu cầu tham số thứ hai là gì?
+A. Nhãn dự đoán (0 hoặc 1)
+[*] B. Xác suất dự đoán lớp dương (predict_proba[:, 1])
+C. Khoảng cách của điểm đến hyperplane
+D. Loss của mô hình
+
+Câu 19: Lý do chính khiến Logistic Regression có F1 thấp hơn RF và GBC trong bài này là:
+A. Logistic Regression không hỗ trợ class_weight='balanced'
+[*] B. Logistic Regression chỉ học được ranh giới phân loại tuyến tính, không phù hợp với dữ liệu phi tuyến
+C. Logistic Regression cần nhiều dữ liệu hơn
+D. Logistic Regression không thể xử lý dữ liệu cảm biến
+
+Câu 20: Nếu tỷ lệ tấn công trong dữ liệu là 10%, và mô hình luôn dự đoán "bình thường" (baseline trivial), accuracy sẽ là bao nhiêu?
+A. 50%
+B. 10%
+[*] C. 90%
+D. 0%
+
+====================================================================
+KẾT THÚC TRẮC NGHIỆM BÀI 1 – CV4.4
+====================================================================

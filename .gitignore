@@ -1,0 +1,27 @@
+# ════════════════════════════════════════════════════════════════════════════
+#  BỘ DỮ LIỆU — KHÔNG ĐƯA LÊN GIT
+# ════════════════════════════════════════════════════════════════════════════
+# Các bộ dữ liệu đã được cài sẵn trong máy ảo của học viên, và một trong số đó
+# (CV4.1/CV4.1/Dataset/data_capec_multilabel.csv, 417 MB) vượt giới hạn 100 MB
+# mỗi file của GitHub. Repo này vì vậy chỉ chứa mã nguồn, báo cáo và tài liệu.
+#
+# Notebook trong repo đều đã lưu kèm output nên vẫn đọc được toàn bộ kết quả
+# mà không cần dữ liệu. Muốn chạy lại, đặt dữ liệu vào đúng các đường dẫn mà
+# phần cấu hình của từng notebook dò tới (xem mục 2 của mỗi notebook).
+*.csv
+*.npz
+*.npy
+*.tar.gz
+*.pcap
+
+# Ảnh kết quả kèm theo bộ dữ liệu BATADAL (biểu đồ WGAN sinh sẵn)
+CV4.4/CV4.4/B*/data/BATADAL/*.png
+
+# ════════════════════════════════════════════════════════════════════════════
+#  PYTHON & JUPYTER
+# ════════════════════════════════════════════════════════════════════════════
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
+venv/

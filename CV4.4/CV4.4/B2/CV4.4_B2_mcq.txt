@@ -1,0 +1,131 @@
+====================================================================
+TRẮC NGHIỆM – CV4.4 BÀI 2
+Xây dựng mô hình học máy phát hiện tấn công DDoS qua lưu lượng mạng
+====================================================================
+Mỗi câu có 4 lựa chọn (A, B, C, D). Chỉ có 1 đáp án đúng.
+Đáp án đúng được đánh dấu bằng [*].
+====================================================================
+
+Câu 1: Bộ dữ liệu CICIDS2017 dùng trong bài 2 thuộc loại tấn công mạng nào?
+A. SQL Injection
+B. Man-in-the-Middle
+[*] C. DDoS (Distributed Denial of Service)
+D. XSS (Cross-Site Scripting)
+
+Câu 2: Trong tập dữ liệu lưu lượng mạng, giá trị vô cực (inf) và NaN được xử lý như thế nào?
+A. Xóa bỏ các hàng chứa inf hoặc NaN
+[*] B. Thay thế inf thành NaN rồi điền 0 bằng fillna(0)
+C. Thay thế bằng giá trị trung bình của cột
+D. Giữ nguyên, sklearn tự xử lý
+
+Câu 3: Chiến lược chia dữ liệu train/val/test theo tỷ lệ 64%/16%/20% được thực hiện như thế nào?
+A. Dùng một lần train_test_split với 3 tập cùng lúc
+[*] B. Chia 2 lần: lần 1 tách 20% test, lần 2 tách 20% từ phần còn lại làm val
+C. Dùng KFold cross-validation
+D. Chia tuần tự theo thứ tự thời gian
+
+Câu 4: Tại sao StandardScaler chỉ được fit trên tập train (X_tr) chứ không phải toàn bộ dữ liệu?
+[*] A. Để tránh rò rỉ thông tin (data leakage) từ val/test vào train
+B. Vì tập train luôn có phân phối chuẩn hơn
+C. Vì fit trên toàn bộ sẽ gây lỗi kỹ thuật
+D. Vì val và test không cần chuẩn hóa
+
+Câu 5: Đặc trưng "Flow IAT Mean" trong dữ liệu mạng đo lường điều gì?
+A. Tổng số byte gửi đi
+B. Tỷ lệ gói tin bị mất
+[*] C. Thời gian trung bình giữa các gói tin (Inter-Arrival Time Mean)
+D. Số lượng kết nối TCP đang mở
+
+Câu 6: Tại sao Logistic Regression có F1-score thấp hơn nhiều so với RF và GBC trong bài phát hiện DDoS?
+A. LR không hỗ trợ phân loại nhị phân
+B. LR cần nhiều epoch hơn để hội tụ
+[*] C. Tấn công DDoS có ranh giới quyết định phi tuyến mà LR không mô hình hóa được
+D. LR không hoạt động với dữ liệu mạng
+
+Câu 7: Tham số n_jobs=-1 trong RandomForestClassifier có ý nghĩa gì?
+A. Chỉ dùng 1 CPU
+B. Giới hạn bộ nhớ ở mức thấp nhất
+[*] C. Sử dụng tất cả các CPU có sẵn để song song hóa
+D. Huấn luyện n lần và chọn kết quả tốt nhất
+
+Câu 8: Trong bài toán phát hiện DDoS, False Positive (FP) có hậu quả thực tế là:
+[*] A. Chặn nhầm lưu lượng hợp lệ (BENIGN bị phân loại là DDoS)
+B. Bỏ sót một cuộc tấn công DDoS thực sự
+C. Tăng độ trễ của mạng
+D. Làm giảm băng thông hệ thống
+
+Câu 9: Tính năng nào của lưu lượng mạng được cho là phân biệt tốt nhất DDoS với BENIGN?
+A. Địa chỉ IP nguồn
+[*] B. Flow IAT (thời gian giữa các gói), kích thước gói, cờ SYN
+C. Số lượng kết nối HTTP
+D. Thời gian kết nối (connection duration)
+
+Câu 10: Kết quả F1 (macro) ≈ 0.997 của RF trên validation trong bài này có nghĩa là:
+A. Mô hình bị overfit 99.7% so với tập train
+[*] B. Trung bình F1 của cả hai lớp (DDoS và BENIGN) đạt 99.7%
+C. Mô hình chỉ phát hiện được 99.7% DDoS
+D. 99.7% dự đoán của mô hình là đúng (accuracy)
+
+Câu 11: Gradient Boosting học các weak learner theo phương pháp nào?
+A. Song song (bagging)
+[*] B. Tuần tự, mỗi cây mới khắc phục lỗi của cây trước bằng gradient descent
+C. Ngẫu nhiên, không có mối liên hệ giữa các cây
+D. Dùng mạng nơ-ron kết nối các cây
+
+Câu 12: Trong bài này, đặc trưng SYN Flag Count trong lưu lượng DDoS thường:
+A. Thấp hơn nhiều so với lưu lượng bình thường
+[*] B. Cao hơn nhiều so với lưu lượng bình thường (tấn công SYN flood)
+C. Bằng 0 trong cả hai trường hợp
+D. Không ảnh hưởng đến phân loại
+
+Câu 13: Khi sử dụng predict_proba(X_val)[:, 1], giá trị trả về là gì?
+A. Nhãn dự đoán (0 hoặc 1)
+[*] B. Xác suất mẫu thuộc lớp dương (DDoS = 1)
+C. Điểm F1 của từng mẫu
+D. Khoảng cách đến hyperplane
+
+Câu 14: Trong dictionary results lưu kết quả, tại sao dùng average='macro' cho precision và recall?
+A. 'Macro' luôn cho kết quả cao hơn 'micro'
+[*] B. 'Macro' tính trung bình không trọng số cho tất cả các lớp, phù hợp với mất cân bằng lớp
+C. 'Macro' là mặc định của sklearn
+D. Chỉ 'macro' mới hoạt động với bài toán nhị phân
+
+Câu 15: Một mô hình RF với F1=0.997 trên val nhưng F1=0.71 trên test là ví dụ của vấn đề gì?
+[*] A. Overfitting (quá khớp)
+B. Underfitting (kém khớp)
+C. Data leakage
+D. Class imbalance
+
+Câu 16: Trong bài 2, chiến lược tránh data leakage khi chuẩn hóa là:
+A. Chuẩn hóa toàn bộ dữ liệu trước khi chia
+[*] B. Fit scaler trên X_tr, transform X_tr, X_val, X_test với cùng scaler đã fit
+C. Chuẩn hóa riêng từng tập độc lập
+D. Không cần chuẩn hóa với Random Forest
+
+Câu 17: Tại sao cần tham số stratify=y khi chia train/val/test trong bài này?
+A. Để đảm bảo thứ tự thời gian được giữ nguyên
+[*] B. Để mỗi tập giữ tỷ lệ DDoS/BENIGN giống với tập gốc, tránh tập val không có DDoS
+C. Để tăng tốc độ chia dữ liệu
+D. Để tránh các giá trị trùng lặp
+
+Câu 18: Feature "Fwd Packet Length Mean" trong lưu lượng DDoS so với BENIGN thường:
+[*] A. Nhỏ hơn (DDoS thường gửi nhiều gói nhỏ để làm quá tải)
+B. Lớn hơn (DDoS gửi ít gói lớn)
+C. Bằng nhau
+D. Không có sự khác biệt nhất quán
+
+Câu 19: Bộ dữ liệu CICIDS2017 được tạo ra trong môi trường nào?
+[*] A. Môi trường phòng thí nghiệm mô phỏng (lab environment)
+B. Dữ liệu thực từ mạng Internet công cộng
+C. Dữ liệu từ hệ thống ICS thực tế
+D. Dữ liệu tổng hợp hoàn toàn bằng GAN
+
+Câu 20: Khi đánh giá mô hình phát hiện DDoS, metric nào quan trọng nhất từ góc độ bảo mật?
+A. Accuracy
+B. Precision (chính xác khi cảnh báo)
+[*] C. Recall (không bỏ sót tấn công) và F1 (cân bằng giữa precision và recall)
+D. AUC-ROC không thực tế trong triển khai thực
+
+====================================================================
+KẾT THÚC TRẮC NGHIỆM BÀI 2 – CV4.4
+====================================================================

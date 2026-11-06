@@ -1,0 +1,148 @@
+====================================================================
+CHECKPOINT – CV4.4 BÀI 1
+Xây dựng mô hình học máy phát hiện tấn công ICS (BATADAL)
+====================================================================
+
+CHECKPOINT 1 – Kích thước ba tập dữ liệu
+-----------------------------------------
+Code:
+    print(train_df.shape, test1_df.shape, test2_df.shape)
+
+Kết quả đúng:
+    (48106, 45) (18433, 45) (10081, 45)
+
+--------------------------------------------------------------------
+
+CHECKPOINT 2 – Số cột theo loại cảm biến
+-----------------------------------------
+Code:
+    feature_cols   = [c for c in train_df.columns if c not in ['DATETIME','ATT_FLAG']]
+    pressure_cols  = [c for c in feature_cols if c.startswith('PRESSURE')]
+    flow_cols      = [c for c in feature_cols if c.startswith('FLOW')]
+    status_cols    = [c for c in feature_cols if c.startswith('STATUS')]
+    print(len(feature_cols), len(pressure_cols), len(flow_cols), len(status_cols))
+
+Kết quả đúng:
+    43 19 12 12
+
+--------------------------------------------------------------------
+
+CHECKPOINT 3 – Phân phối nhãn trong tập Test 1
+-----------------------------------------------
+Code:
+    y_test1 = (test1_df['ATT_FLAG'] != 0).astype(int).values
+    print((y_test1 == 0).sum(), (y_test1 == 1).sum())
+
+Kết quả đúng:
+    16465 1968
+
+--------------------------------------------------------------------
+
+CHECKPOINT 4 – Kích thước tập train/val sau khi chia 70/30
+------------------------------------------------------------
+Code:
+    X_tr, X_val, y_tr, y_val = train_test_split(
+        X_sup_scaled, y_test1, test_size=0.3, random_state=42, stratify=y_test1)
+    print(X_tr.shape[0], X_val.shape[0])
+    print(y_tr.sum(), y_val.sum())
+
+Kết quả đúng:
+    12903 5530
+    1378 590
+
+--------------------------------------------------------------------
+
+CHECKPOINT 5 – Kết quả Logistic Regression trên Val
+-----------------------------------------------------
+Code:
+    lr = LogisticRegression(C=1.0, class_weight='balanced', max_iter=1000, random_state=42)
+    lr.fit(X_tr, y_tr)
+    yp = lr.predict(X_val);  pp = lr.predict_proba(X_val)[:, 1]
+    cm = confusion_matrix(y_val, yp)
+    print(f1_score(y_val, yp, average='macro').round(4))
+    print(roc_auc_score(y_val, pp).round(4))
+    print(cm[0,0], cm[0,1], cm[1,0], cm[1,1])
+
+Kết quả đúng:
+    0.8365
+    0.9735
+    4576 364 57 533
+
+--------------------------------------------------------------------
+
+CHECKPOINT 6 – Kết quả Gradient Boosting trên Val
+---------------------------------------------------
+Code:
+    gbc = GradientBoostingClassifier(n_estimators=100, learning_rate=0.1,
+                                      max_depth=4, random_state=42)
+    gbc.fit(X_tr, y_tr)
+    yp = gbc.predict(X_val);  pp = gbc.predict_proba(X_val)[:, 1]
+    cm = confusion_matrix(y_val, yp)
+    print(f1_score(y_val, yp, average='macro').round(4))
+    print(roc_auc_score(y_val, pp).round(4))
+    print(cm[0,0], cm[0,1], cm[1,0], cm[1,1])
+
+Kết quả đúng:
+    0.9711
+    0.9915
+    4932 8 51 539
+
+--------------------------------------------------------------------
+
+CHECKPOINT 7 – Top 3 đặc trưng quan trọng của Random Forest
+-------------------------------------------------------------
+Code:
+    rf = RandomForestClassifier(n_estimators=200, class_weight='balanced',
+                                 random_state=42, n_jobs=-1)
+    rf.fit(X_tr, y_tr)
+    top3 = np.argsort(rf.feature_importances_)[::-1][:3]
+    print([feature_cols[i] for i in top3])
+
+Kết quả đúng:
+    ['FLOW_PU7', 'PRESSURE_T1', 'FLOW_PU6']
+
+--------------------------------------------------------------------
+
+CHECKPOINT 8 – GBC dự đoán trên Test 2
+----------------------------------------
+Code:
+    yp2 = gbc.predict(X_test2_scaled)
+    pp2 = gbc.predict_proba(X_test2_scaled)[:, 1]
+    cm2 = confusion_matrix(y_test2, yp2)
+    print(f1_score(y_test2, yp2, average='macro').round(4))
+    print(roc_auc_score(y_test2, pp2).round(4))
+    print(cm2[0,0], cm2[0,1], cm2[1,0], cm2[1,1])
+
+Kết quả đúng:
+    0.7288
+    0.7713
+    8436 17 1054 574
+
+--------------------------------------------------------------------
+
+CHECKPOINT 9 – Phân phối nhãn trong tập Test 2
+-----------------------------------------------
+Code:
+    y_test2 = (test2_df['ATT_FLAG'] != 0).astype(int).values
+    print((y_test2 == 0).sum(), (y_test2 == 1).sum())
+
+Kết quả đúng:
+    8453 1628
+
+--------------------------------------------------------------------
+
+CHECKPOINT 10 – Số đặc trưng sau khi loại DATETIME và ATT_FLAG
+---------------------------------------------------------------
+Code:
+    all_cols = list(train_df.columns)
+    print(len(all_cols))
+    feature_cols = [c for c in all_cols if c not in ['DATETIME','ATT_FLAG']]
+    print(len(feature_cols))
+
+Kết quả đúng:
+    45
+    43
+
+====================================================================
+KẾT THÚC CHECKPOINT BÀI 1 – CV4.4
+====================================================================

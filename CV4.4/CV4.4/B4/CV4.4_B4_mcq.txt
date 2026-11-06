@@ -1,0 +1,131 @@
+====================================================================
+TRẮC NGHIỆM – CV4.4 BÀI 4
+Xây dựng mô hình CNN phát hiện tấn công trong hệ thống ICS
+====================================================================
+Mỗi câu có 4 lựa chọn (A, B, C, D). Chỉ có 1 đáp án đúng.
+Đáp án đúng được đánh dấu bằng [*].
+====================================================================
+
+Câu 1: 1D CNN khác với 2D CNN ở điểm gì khi áp dụng cho dữ liệu chuỗi thời gian?
+A. 1D CNN không có lớp pooling
+[*] B. 1D CNN áp dụng bộ lọc trượt dọc theo chiều thời gian thay vì cả chiều cao lẫn chiều rộng
+C. 1D CNN không học được đặc trưng không gian
+D. 1D CNN cần ít dữ liệu hơn 100 lần so với 2D CNN
+
+Câu 2: Trong kiến trúc CNN bài 4, Conv1D(filters=64, kernel_size=3, padding='same') tạo ra bao nhiêu bản đồ đặc trưng (feature maps)?
+A. 3
+B. 43 (số đặc trưng đầu vào)
+[*] C. 64
+D. 128
+
+Câu 3: BatchNormalization sau Conv1D có tác dụng gì?
+A. Tăng số lượng đặc trưng học được
+[*] B. Chuẩn hóa đầu ra của mỗi batch, giúp ổn định và tăng tốc huấn luyện
+C. Giảm số tham số của mô hình
+D. Ngăn chặn overfitting bằng cách dropout ngẫu nhiên
+
+Câu 4: MaxPooling1D(pool_size=2) sau lớp Conv1D đầu tiên (output 30 timesteps) tạo ra chuỗi có độ dài bao nhiêu?
+A. 30
+B. 60
+[*] C. 15
+D. 8
+
+Câu 5: GlobalAveragePooling1D() trong kiến trúc CNN này làm gì?
+A. Lấy giá trị max trên toàn bộ chuỗi
+[*] B. Tính trung bình trên toàn bộ chiều thời gian, chuyển (7, 64) → (64,)
+C. Kéo phẳng tensor thành vector 1D: (7×64,)
+D. Tính tổng trọng số của toàn bộ feature map
+
+Câu 6: Trong bài 4, temporal split (chia theo thời gian) được dùng thay vì random split để:
+A. Tăng tốc độ huấn luyện
+[*] B. Tránh data leakage: các chuỗi gần nhau về thời gian không xuất hiện cả trong train lẫn val
+C. Giảm số lượng chuỗi chồng lấp
+D. Đảm bảo tỷ lệ tấn công trong train/val bằng nhau
+
+Câu 7: Tập train trong bài 4 bao gồm:
+A. Chỉ dữ liệu bình thường từ train_df
+B. Chỉ 70% đầu của test1
+[*] C. Dữ liệu bình thường từ train_df + 70% đầu test1 (cả bình thường lẫn tấn công)
+D. Toàn bộ test1 và test2
+
+Câu 8: pos_weight ≈ 40.88 trong bài 4 (cao hơn nhiều so với ~7.47 ở bài 3) vì lý do gì?
+[*] A. Tỷ lệ tấn công trong tập train thấp hơn (~2.4% thay vì ~11.8%) do kết hợp nhiều dữ liệu bình thường từ train_df
+B. BATADAL test2 có nhiều mẫu tấn công hơn
+C. CNN cần class weight cao hơn LSTM để hội tụ
+D. Ngưỡng phân loại CNN mặc định là 0.025
+
+Câu 9: Trong kiến trúc CNN bài 4, số lượng filter tăng từ 64 → 128 ở lớp Conv1D thứ hai vì:
+A. Bắt buộc phải tăng để tránh lỗi shape
+[*] B. Các lớp sâu hơn học đặc trưng phức tạp hơn, cần nhiều filter để biểu diễn
+C. MaxPooling đã giảm độ dài chuỗi nên cần tăng filter để bù lại
+D. 128 là giá trị mặc định cho lớp thứ hai
+
+Câu 10: Dropout(0.4) sau Dense(64) có nghĩa là:
+A. 40% trọng số bị đặt về 0 vĩnh viễn
+[*] B. Trong mỗi forward pass, 40% nơ-ron Dense(64) bị tắt ngẫu nhiên để giảm co-adaptation
+C. Learning rate giảm 40% sau mỗi epoch
+D. Chỉ 60% dữ liệu được sử dụng trong mỗi batch
+
+Câu 11: So sánh CNN và LSTM trong bài phát hiện tấn công ICS: đặc điểm nào mô tả đúng CNN?
+A. CNN phù hợp hơn với phụ thuộc dài hạn (long-range dependencies)
+[*] B. CNN trích xuất mẫu cục bộ (local patterns) hiệu quả; LSTM tốt hơn với phụ thuộc thời gian dài
+C. CNN không thể xử lý dữ liệu chuỗi thời gian
+D. CNN luôn cho kết quả cao hơn LSTM trong mọi bài toán
+
+Câu 12: Trong bài 4, STEP_TRAIN=5 cho tập train và STEP_EVAL=1 cho val/test vì:
+[*] A. STEP lớn hơn cho train giảm bộ nhớ và tính dư thừa; STEP=1 cho eval đảm bảo phủ đầy đủ mọi timestep
+B. STEP=1 sẽ gây overfit nếu dùng cho train
+C. STEP=5 cho eval làm tăng F1
+D. Không có sự khác biệt thực tế, chỉ là quy ước
+
+Câu 13: Kết quả F1 Test2 của CNN (~0.67) thấp hơn LSTM (~0.95). Nguyên nhân chính là:
+A. CNN kém hơn LSTM về mặt kiến trúc
+[*] B. Tập train của CNN nhỏ hơn và mất cân bằng hơn (~2.4% attack vs ~11.8%); dữ liệu tăng cường chưa tối ưu
+C. CNN không hỗ trợ class_weight
+D. Dropout 0.4 quá cao gây underfitting
+
+Câu 14: padding='same' trong Conv1D có tác dụng gì?
+[*] A. Thêm padding để đầu ra có cùng độ dài với đầu vào
+B. Cắt bỏ các cạnh của chuỗi để tránh border effects
+C. Tăng kích thước kernel để bao phủ toàn bộ chuỗi
+D. Áp dụng zero-padding ở cuối chuỗi
+
+Câu 15: Trong quá trình inference (dự đoán), Dropout và BatchNormalization hoạt động khác với training như thế nào?
+A. Không có sự khác biệt
+[*] B. Dropout bị vô hiệu hóa; BN dùng thống kê từ training (running mean/var) thay vì batch hiện tại
+C. Dropout tăng lên 2 lần để bù cho batch nhỏ
+D. BN cần fit lại trên tập test
+
+Câu 16: Kỹ thuật data augmentation trong bài 4 (kết hợp normal từ train_df với attack từ test1) giải quyết vấn đề gì?
+A. Thiếu dữ liệu bình thường
+[*] B. Tăng số lượng mẫu tấn công để cải thiện khả năng phát hiện, đồng thời bổ sung dữ liệu bình thường đa dạng
+C. Giảm overfitting bằng cách thêm noise
+D. Cân bằng tỷ lệ tấn công lên đúng 50%
+
+Câu 17: Số tham số trainable (~62,401) của CNN bài 4 so với LSTM (~65,000+) cho thấy điều gì?
+[*] A. Hai mô hình có độ phức tạp tương đương; sự khác biệt về kết quả chủ yếu do dữ liệu và kiến trúc
+B. CNN ít tham số hơn nên luôn underfitting
+C. LSTM có nhiều tham số nên cần ít dữ liệu hơn
+D. CNN sẽ hội tụ nhanh hơn đúng 2 lần
+
+Câu 18: Tại sao Conv1D thứ ba (filters=64) không có MaxPooling theo sau?
+A. Vì 64 filters không thể pooling tiếp
+B. Vì GlobalAveragePooling1D đã thay thế MaxPooling
+[*] C. Lớp GlobalAveragePooling1D ngay sau đó đã tổng hợp toàn bộ chuỗi, không cần MaxPooling thêm nữa
+D. Vì chuỗi đã quá ngắn để pooling tiếp
+
+Câu 19: So sánh hiệu suất model trên val (~F1 0.85) và test2 (~F1 0.67), khoảng cách này cho thấy:
+A. Mô hình hoạt động tốt và khoảng cách này là bình thường
+[*] B. Mô hình có thể chưa tổng quát tốt sang test2; cần thêm dữ liệu hoặc cải thiện kỹ thuật augmentation
+C. Val và test2 đến từ cùng một phân phối
+D. F1 0.67 trên test2 là không thể cải thiện được
+
+Câu 20: Trong bài 4, việc dùng temporal split (70/30) thay vì random split trên test1 ảnh hưởng như thế nào đến kết quả?
+A. Không ảnh hưởng vì test1 và test2 là hai tập khác nhau
+[*] B. Random split tạo data leakage (chuỗi chồng lấp giữa train và val), dẫn đến AUC giả tạo cao; temporal split cho kết quả thực tế hơn
+C. Temporal split luôn cho F1 cao hơn random split
+D. Temporal split làm mất một số mẫu tấn công
+
+====================================================================
+KẾT THÚC TRẮC NGHIỆM BÀI 4 – CV4.4
+====================================================================

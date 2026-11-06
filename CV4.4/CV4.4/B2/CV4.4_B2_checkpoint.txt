@@ -1,0 +1,152 @@
+====================================================================
+CHECKPOINT – CV4.4 BÀI 2
+Phát hiện tấn công DDoS qua lưu lượng mạng (CICIDS2017)
+====================================================================
+
+CHECKPOINT 1 – Kích thước tập dữ liệu
+--------------------------------------
+Code:
+    print(df.shape)
+
+Kết quả đúng:
+    (13000, 79)
+
+--------------------------------------------------------------------
+
+CHECKPOINT 2 – Phân phối nhãn gốc
+-----------------------------------
+Code:
+    print(df['Label'].value_counts().to_dict())
+
+Kết quả đúng:
+    {'DDoS': 7400, 'BENIGN': 5600}
+
+--------------------------------------------------------------------
+
+CHECKPOINT 3 – Số NaN sau khi làm sạch và mã hóa nhãn
+-------------------------------------------------------
+Code:
+    feat_all = [c for c in df.columns if c != 'Label']
+    df[feat_all] = df[feat_all].replace([np.inf, -np.inf], np.nan).fillna(0)
+    df['label'] = df['Label'].map({'DDoS': 1, 'BENIGN': 0})
+    print(df[feat_all].isnull().sum().sum())
+    print(df['label'].value_counts().to_dict())
+
+Kết quả đúng:
+    0
+    {1: 7400, 0: 5600}
+
+--------------------------------------------------------------------
+
+CHECKPOINT 4 – Kích thước tập train/val/test sau khi chia
+----------------------------------------------------------
+Code:
+    feat_cols = ['Flow Packets/s','Flow IAT Mean','Flow IAT Std',
+                 'Fwd Packet Length Mean','Bwd Packet Length Mean',
+                 'SYN Flag Count','ACK Flag Count']
+    X = df[feat_cols].values; y = df['label'].values
+    X_tv, X_test, y_tv, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=42, stratify=y)
+    X_tr, X_val, y_tr, y_val = train_test_split(
+        X_tv, y_tv, test_size=0.2, random_state=42, stratify=y_tv)
+    print(X_tr.shape[0], X_val.shape[0], X_test.shape[0])
+    print(y_tr.sum(), y_val.sum(), y_test.sum())
+
+Kết quả đúng:
+    8320 2080 2600
+    4736 1184 1480
+
+--------------------------------------------------------------------
+
+CHECKPOINT 5 – Logistic Regression trên Val
+--------------------------------------------
+Code:
+    lr = LogisticRegression(max_iter=2000, class_weight='balanced',
+                             C=0.1, random_state=42)
+    lr.fit(X_tr, y_tr)
+    yp = lr.predict(X_val)
+    cm = confusion_matrix(y_val, yp)
+    print(round(f1_score(y_val, yp, average='macro'), 4))
+    print(cm[0,0], cm[0,1], cm[1,0], cm[1,1])
+
+Kết quả đúng:
+    0.8962
+    694 202 2 1182
+
+--------------------------------------------------------------------
+
+CHECKPOINT 6 – Random Forest trên Val
+--------------------------------------
+Code:
+    rf = RandomForestClassifier(n_estimators=100, class_weight='balanced',
+                                 random_state=42)
+    rf.fit(X_tr, y_tr)
+    yp = rf.predict(X_val)
+    cm = confusion_matrix(y_val, yp)
+    print(round(f1_score(y_val, yp, average='macro'), 4))
+    print(cm[0,0], cm[0,1], cm[1,0], cm[1,1])
+
+Kết quả đúng:
+    0.9980
+    896 0 4 1180
+
+--------------------------------------------------------------------
+
+CHECKPOINT 7 – Gradient Boosting trên Val
+------------------------------------------
+Code:
+    gbc = GradientBoostingClassifier(n_estimators=100, random_state=42)
+    gbc.fit(X_tr, y_tr)
+    yp = gbc.predict(X_val)
+    cm = confusion_matrix(y_val, yp)
+    print(round(f1_score(y_val, yp, average='macro'), 4))
+    print(cm[0,0], cm[0,1], cm[1,0], cm[1,1])
+
+Kết quả đúng:
+    0.9966
+    895 1 6 1178
+
+--------------------------------------------------------------------
+
+CHECKPOINT 8 – Top 2 đặc trưng quan trọng của RF
+--------------------------------------------------
+Code:
+    imp = rf.feature_importances_
+    top2 = np.argsort(imp)[::-1][:2]
+    print([feat_cols[i] for i in top2])
+
+Kết quả đúng:
+    ['Bwd Packet Length Mean', 'Fwd Packet Length Mean']
+
+--------------------------------------------------------------------
+
+CHECKPOINT 9 – RF trên tập Test
+---------------------------------
+Code:
+    yp_test = rf.predict(X_test)
+    pp_test = rf.predict_proba(X_test)[:, 1]
+    cm_test = confusion_matrix(y_test, yp_test)
+    print(round(f1_score(y_test, yp_test, average='macro'), 4))
+    print(round(roc_auc_score(y_test, pp_test), 4))
+    print(cm_test[0,0], cm_test[0,1], cm_test[1,0], cm_test[1,1])
+
+Kết quả đúng:
+    0.9973
+    0.9996
+    1116 4 3 1477
+
+--------------------------------------------------------------------
+
+CHECKPOINT 10 – Số đặc trưng được dùng trong mô hình
+------------------------------------------------------
+Code:
+    print(len(feat_cols))
+    print(feat_cols)
+
+Kết quả đúng:
+    7
+    ['Flow Packets/s', 'Flow IAT Mean', 'Flow IAT Std', 'Fwd Packet Length Mean', 'Bwd Packet Length Mean', 'SYN Flag Count', 'ACK Flag Count']
+
+====================================================================
+KẾT THÚC CHECKPOINT BÀI 2 – CV4.4
+====================================================================
