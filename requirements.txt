@@ -1,88 +1,13 @@
-# ══════════════════════════════════════════════════════════════════════════════
-#  THƯ VIỆN CHO BỘ BÀI THỰC HÀNH C07
-# ══════════════════════════════════════════════════════════════════════════════
-#  Python 3.10.11 (phiên bản đang dùng trên máy ảo học viên)
-#
-#  Cài toàn bộ:
-#      pip install -r requirements.txt
-#
-#  Danh sách này được lập bằng cách quét import thực tế của cả 48 notebook
-#  trong repo. Các phiên bản có dấu == là phiên bản ĐÃ XÁC MINH trên máy đã
-#  chạy toàn bộ notebook; riêng statsmodels dùng >= vì chưa được cài trên máy
-#  đó (xem ghi chú ở cuối file).
-# ══════════════════════════════════════════════════════════════════════════════
-
-
-# ──────────────────────────────────────────────────────────────────────────────
-#  NHÓM 1 — HỌC MÁY CỔ ĐIỂN (đủ cho 15 bài mới)
-# ──────────────────────────────────────────────────────────────────────────────
-#  Chỉ cần nhóm này là chạy được trọn vẹn 15 bài sau, không cần GPU:
-#      CV4.1  B13 KNN · B14 Naive Bayes · B15 SVM · B16 Phát hiện bất thường
-#             B17 Voting & Stacking Ensemble
-#      CV4.2  B12 KNN · B13 Naive Bayes · B14 SVM · B15 Phát hiện bất thường
-#             B16 Voting & Stacking Ensemble
-#      CV4.4  B6  KNN · B7  Naive Bayes · B8  SVM · B9  Phát hiện bất thường
-#             B10 Voting & Stacking Ensemble
-#  Ngoài ra nhóm này cũng đủ cho các bài cũ: CV4.1 B1-B4, CV4.2 B1-B5 và B11,
-#  CV4.4 B1-B2.
 numpy==1.26.4
 pandas==1.5.1
 scikit-learn==1.2.0
 matplotlib==3.8.2
 seaborn==0.13.1
-
-#  Môi trường chạy notebook
 jupyterlab==4.1.5
-
-
-# ──────────────────────────────────────────────────────────────────────────────
-#  NHÓM 2 — GRADIENT BOOSTING
-# ──────────────────────────────────────────────────────────────────────────────
-#  Dùng ở: CV4.1 B3, B4, B6, B8, B10
 xgboost==2.0.3
-
-
-# ──────────────────────────────────────────────────────────────────────────────
-#  NHÓM 3 — HỌC SÂU (TensorFlow / Keras)
-# ──────────────────────────────────────────────────────────────────────────────
-#  Dùng ở: CV4.1 B5-B10 (RNN, GRU, LSTM)
-#          CV4.2 B6-B9  (SimpleRNN, GRU, LSTM, CNN)
-#          CV4.4 B3-B4  (LSTM, CNN)
-#  Lưu ý: tensorflow 2.11 là bản cuối còn hỗ trợ GPU trực tiếp trên Windows.
-#  Từ 2.12 trở lên, chạy GPU trên Windows phải qua WSL2.
-tensorflow==2.11.0
-
-
-# ──────────────────────────────────────────────────────────────────────────────
-#  NHÓM 4 — MÔ HÌNH NGÔN NGỮ (SecBERT / TinyBERT)
-# ──────────────────────────────────────────────────────────────────────────────
-#  Dùng ở: CV4.1 B11-B12 (SecBERT)
-#          CV4.2 B10     (TinyBERT)
-#          CV4.4 B5      (SecBERT)
-#  Lưu ý về torch: bản đang dùng là 2.6.0+cu124 (biên dịch kèm CUDA 12.4, cài
-#  từ index riêng của PyTorch). Dòng dưới đây sẽ cài bản mặc định trên PyPI —
-#  đủ để chạy nhưng không dùng được GPU. Muốn bản CUDA thì cài riêng:
-#      pip install torch==2.6.0 --index-url https://download.pytorch.org/whl/cu124
 torch==2.6.0
 transformers==5.5.3
 datasets==4.8.4
-
-
-# ──────────────────────────────────────────────────────────────────────────────
-#  NHÓM 5 — GIẢI THÍCH MÔ HÌNH (XAI)
-# ──────────────────────────────────────────────────────────────────────────────
-#  Dùng ở: CV4.2 B11 (XAI cho botnet CTU-13)
 shap==0.48.0
 lime==0.2.0.1
-
-
-# ──────────────────────────────────────────────────────────────────────────────
-#  NHÓM 6 — THỐNG KÊ
-# ──────────────────────────────────────────────────────────────────────────────
-#  Dùng ở: CV4.2 B4 — hàm variance_inflation_factor để đo đa cộng tuyến
-#
-#  ⚠ Khác với mọi gói trên, statsmodels CHƯA được cài trên máy đã chạy toàn bộ
-#  notebook, nên phiên bản dưới đây là mức tối thiểu khuyến nghị chứ không phải
-#  phiên bản đã xác minh. Nếu notebook CV4.2 B4 báo
-#  ModuleNotFoundError: No module named 'statsmodels' thì chỉ cần cài gói này.
 statsmodels>=0.14
