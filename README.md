@@ -12,12 +12,31 @@ Mỗi bài gồm một notebook (đã lưu kèm toàn bộ output) và một bá
 
 ---
 
+## Chọn phiên bản Python
+
+Repo có **hai** file requirements, vì một số thư viện không có bản dựng sẵn cho mọi phiên bản Python:
+
+| Môi trường | Dùng file | Ghi chú |
+|---|---|---|
+| **Python 3.10** *(khuyến nghị)* | `requirements.txt` | Đúng phiên bản đã chạy toàn bộ notebook. Tái lập chính xác số liệu trong báo cáo. |
+| **Python 3.12** | `requirements-py312.txt` | Phải nâng `pandas`, `scikit-learn`, `tensorflow`. Chạy lại có thể ra số lệch nhẹ. |
+
+Kiểm tra phiên bản đang dùng:
+
+```bash
+python --version
+```
+
+Nếu chỉ cần **đọc** bài thì không phải cài gì — mọi notebook đã lưu sẵn output.
+
 ## Cài đặt
 
 ```bash
 python -m venv .venv
 .venv\Scripts\activate          # Windows
-pip install -r requirements.txt
+
+pip install -r requirements.txt           # nếu dùng Python 3.10
+pip install -r requirements-py312.txt     # nếu dùng Python 3.12
 ```
 
 ### Chỉ làm 15 bài học máy cổ điển
@@ -50,6 +69,43 @@ pip install torch==2.6.0 --index-url https://download.pytorch.org/whl/cu124
 **`tensorflow==2.11.0` sẽ hạ cấp `protobuf` xuống 3.19.6.** Trong môi trường ảo mới thì không sao; nếu cài trực tiếp vào môi trường đang dùng thì nên biết trước. Lưu ý thêm: 2.11 là bản cuối còn hỗ trợ GPU trực tiếp trên Windows, từ 2.12 trở đi phải chạy qua WSL2.
 
 **`statsmodels` dùng ràng buộc `>=0.14`** thay vì ghim phiên bản cố định như các gói khác, vì gói này chưa được cài trên máy đã chạy toàn bộ notebook. Nếu `CV4.2/B4` báo `ModuleNotFoundError: No module named 'statsmodels'` thì chỉ cần cài riêng nó.
+
+### Nếu pip báo lỗi `Failed to build pandas` / `No module named 'pkg_resources'`
+
+```
+Collecting pandas==1.5.1
+  Using cached pandas-1.5.1.tar.gz (5.2 MB)
+  Getting requirements to build wheel ... error
+  ModuleNotFoundError: No module named 'pkg_resources'
+ERROR: Failed to build 'pandas' when getting requirements to build wheel
+```
+
+Đây là dấu hiệu **sai phiên bản Python**, không phải lỗi của `pkg_resources`. Hãy nhìn dòng `Using cached ...` phía trên: nếu tên file chứa `cp312` thì môi trường đang là Python 3.12, trong khi `requirements.txt` ghim các phiên bản chỉ có bản dựng sẵn cho Python 3.10.
+
+Khi không tìm được bản dựng sẵn, pip tải mã nguồn `.tar.gz` về tự biên dịch — và `pandas 1.5.1` không biên dịch được trên Python 3.12.
+
+Ba gói không có bản cho Python 3.12:
+
+| Gói | Bản trong `requirements.txt` | Bản tối thiểu chạy được trên 3.12 |
+|---|---|---|
+| `pandas` | 1.5.1 | 2.1.1 |
+| `scikit-learn` | 1.2.0 | 1.3.2 |
+| `tensorflow` | 2.11.0 | 2.16.1 |
+
+**Cách xử lý** — chọn một trong hai:
+
+```bash
+pip install -r requirements-py312.txt      # giữ nguyên Python 3.12
+```
+
+hoặc tạo lại môi trường ảo bằng Python 3.10 (nên chọn cách này nếu cần chạy các bài học sâu):
+
+```bash
+rmdir /s /q .venv
+py -3.10 -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt
+```
 
 ### Nếu pip báo lỗi `UnicodeDecodeError` khi đọc requirements.txt
 

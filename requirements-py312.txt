@@ -1,0 +1,67 @@
+# Thu vien cho bo bai thuc hanh C07 -- ban danh cho PYTHON 3.12
+#
+#     pip install -r requirements-py312.txt
+#
+# Dung file nay NEU moi truong cua ban la Python 3.12. Neu dung Python 3.10
+# thi dung requirements.txt (ban da xac minh, tai lap dung so lieu trong bao
+# cao). Xem README.md muc "Chon phien ban Python" de biet nen chon ban nao.
+#
+# Ly do phai co ban rieng: ba goi duoi day KHONG co ban dung san cho Python
+# 3.12, nen pip se co bien dich tu ma nguon va that bai:
+#
+#     pandas 1.5.1        -> nang len 2.2.3
+#     scikit-learn 1.2.0  -> nang len 1.5.2
+#     tensorflow 2.11.0   -> nang len 2.16.1
+#
+# LUU Y VE TAI LAP KET QUA: so lieu trong muc "Ket qua ky vong" cua 15 bao cao
+# duoc do bang scikit-learn 1.2.0 tren Python 3.10.11. Voi scikit-learn 1.5.2,
+# ket qua co the lech nhe. Notebook da luu san output nen van doc duoc ket qua
+# goc; chi khi chay lai moi co the thay so khac.
+#
+# File nay chi dung ky tu ASCII (xem README muc loi UnicodeDecodeError).
+
+
+# --- Nhom 1: hoc may co dien -------------------------------------------------
+# Du cho toan bo 15 bai moi. Da kiem chung: ca 7 goi deu co ban dung san cho
+# Python 3.12 va phan giai duoc cung nhau.
+numpy==1.26.4
+pandas==2.2.3
+scikit-learn==1.5.2
+matplotlib==3.8.2
+seaborn==0.13.1
+jupyterlab==4.1.5
+
+# --- Nhom 2: gradient boosting -----------------------------------------------
+# CV4.1 B3, B4, B6, B8, B10
+xgboost==2.0.3
+
+# --- Nhom 3: hoc sau (TensorFlow / Keras) ------------------------------------
+# CV4.1 B5-B10 | CV4.2 B6-B9 | CV4.4 B3-B4
+#
+# CANH BAO: TensorFlow 2.16 chuyen sang Keras 3, co mot so khac biet API so voi
+# Keras 2 ma cac notebook hoc sau duoc viet cho. Neu notebook bao loi lien quan
+# toi keras, cai them goi tf-keras de quay lai Keras 2:
+#     pip install tf-keras
+# roi dat bien moi truong truoc khi chay notebook:
+#     set TF_USE_LEGACY_KERAS=1
+#
+# Neu can chay cac bai hoc sau ma khong muon rui ro nay, hay dung Python 3.10
+# voi requirements.txt.
+tensorflow==2.16.1
+
+# --- Nhom 4: mo hinh ngon ngu (SecBERT / TinyBERT) ---------------------------
+# CV4.1 B11-B12 | CV4.2 B10 | CV4.4 B5
+# Ban CPU. Muon ban CUDA:
+#   pip install torch==2.6.0 --index-url https://download.pytorch.org/whl/cu124
+torch==2.6.0
+transformers==5.5.3
+datasets==4.8.4
+
+# --- Nhom 5: giai thich mo hinh (XAI) ----------------------------------------
+# CV4.2 B11
+shap==0.48.0
+lime==0.2.0.1
+
+# --- Nhom 6: thong ke --------------------------------------------------------
+# CV4.2 B4 (variance_inflation_factor)
+statsmodels>=0.14
