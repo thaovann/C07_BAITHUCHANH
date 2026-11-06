@@ -29,6 +29,16 @@ python --version
 
 Nếu chỉ cần **đọc** bài thì không phải cài gì — mọi notebook đã lưu sẵn output.
 
+### Cài ngay trong notebook
+
+Mỗi notebook đã có sẵn một cell cài đặt ở **vị trí đầu tiên**. Chạy cell đó là đủ cho riêng bài đang mở, không cần cài cả `requirements.txt`:
+
+- Chỉ cài những gói mà **riêng bài đó** dùng — ví dụ bài KNN chỉ cần 4 gói, bài SecBERT cần 8.
+- Chỉ cài gói nào **đang thiếu**; đã đủ thì không thay đổi gì.
+- Tự chọn phiên bản theo Python đang chạy (3.10 hay 3.12).
+
+Sau khi cell báo đã cài xong, **khởi động lại kernel** rồi chạy lại từ đầu.
+
 ## Cài đặt
 
 ```bash
